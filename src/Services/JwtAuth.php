@@ -41,6 +41,7 @@ class JwtAuth {
             if ($getToken === true || $getToken == 'true') {
                 $decoded = JWT::decode($jwt, $this->key, ['HS256']);
                 $data_to_return = [
+                    'status'    => 'success',
                     'payload'   => $decoded,
                     'jwt'       => $jwt
                 ];

@@ -134,7 +134,14 @@ class UserController extends AbstractController {
                 $pwd = hash('sha256', $password);
                 //5. Si todo es válido, llamaremos a un servicio para crear un token (jwt)
                 $token = $jwt_auth->signup($email, $pwd, $getToken);
-                $data_to_return = $token;
+                if($token['status']!='error'){
+                    $data_to_return = [
+                        'status'    => 'success',
+                        'code'      => 200,
+                        'token'     => $token
+                    ];    
+                }
+                
             }
         }
         //6. Si los datos coinciden, crear respuesta satisfactoria
