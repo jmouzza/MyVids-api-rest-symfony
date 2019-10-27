@@ -8,10 +8,10 @@ use App\Entity\User;
 class JwtAuth {
 
     public $key;
-    public $en;
+    public $em;
 
     public function __construct($entity_manager) {
-        $this->en = $entity_manager;
+        $this->em = $entity_manager;
         /*
          * De esta manera está disponible el servicio inyectado "entity manager" 
          * dentro del servicio, y podremos realizar consultas a la BBDD 
@@ -21,7 +21,7 @@ class JwtAuth {
 
     public function signup($email, $pwd, $getToken = null) {
         //1. Comprobar si el usuario y el password coinciden con los datos en la BBDD
-        $user = $this->en->getRepository(User::class)->findOneBy([
+        $user = $this->em->getRepository(User::class)->findOneBy([
             'email' => $email,
             'password' => $pwd
         ]);
@@ -36,7 +36,10 @@ class JwtAuth {
                 'exp' => time() + (7 * 24 * 60 * 60)
             );
             $jwt = JWT::encode($token_payload, $this->key, 'HS256');
-            $data_to_return = $jwt;
+            $data_to_return = [
+                'status' => 'success',
+                'jwt'    => $jwt
+            ];
             //3.Comprobar el flag gettoken, Condición
             if ($getToken === true || $getToken == 'true') {
                 $decoded = JWT::decode($jwt, $this->key, ['HS256']);
