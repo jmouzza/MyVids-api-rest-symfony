@@ -13,6 +13,11 @@ register:
     controller: App\Controller\UserController::create
     methods: [POST]
 
+update_user:
+    path: /update_user
+    controller: App\Controller\UserController::update
+    methods: [PUT]
+
 login:
     path: /login
     controller: App\Controller\UserController::login
